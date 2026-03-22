@@ -1,9 +1,6 @@
 /**
  * VocabVault Database Migration Runner
  * Run: npm run migrate
- *
- * Reads all .sql files in this directory (sorted by name),
- * applies each one once, and records it in the `migrations` table.
  */
 
 const fs   = require('fs');
@@ -12,7 +9,13 @@ const { Pool } = require('pg');
 
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  // Railway PostgreSQL requires SSL in production
+  ssl: process.env.DATABASE_URL?.includes('railway')
+    ? { rejectUnauthorized: false }
+    : false,
+});
 
 async function migrate() {
   const client = await pool.connect();
