@@ -45,6 +45,7 @@ export default function AddVocabPage() {
       });
       setSuccess('✅ เพิ่มคำศัพท์เรียบร้อยแล้ว!');
       setForm(emptyForm);
+      window.scrollTo(0, 0);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -66,7 +67,6 @@ export default function AddVocabPage() {
         {success && <div className="alert alert-success">{success}</div>}
 
         <form onSubmit={handleSubmit}>
-          {/* Word */}
           <div className="form-group">
             <label className="form-label">คำศัพท์ <span style={{ color: 'red' }}>*</span></label>
             <input
@@ -80,7 +80,6 @@ export default function AddVocabPage() {
             />
           </div>
 
-          {/* Translation */}
           <div className="form-group">
             <label className="form-label">คำแปล <span style={{ color: 'red' }}>*</span></label>
             <input
@@ -93,7 +92,6 @@ export default function AddVocabPage() {
             />
           </div>
 
-          {/* Synonyms */}
           <div className="form-group">
             <label className="form-label">คำเหมือน (Synonyms)</label>
             <div className="synonyms-list">
@@ -111,7 +109,6 @@ export default function AddVocabPage() {
                       type="button"
                       className="btn btn-danger btn-sm"
                       onClick={() => removeSynonym(i)}
-                      title="ลบ"
                     >
                       ✕
                     </button>
@@ -123,13 +120,11 @@ export default function AddVocabPage() {
               type="button"
               className="add-synonym-btn"
               onClick={addSynonym}
-              style={{ marginTop: '.5rem' }}
             >
               + เพิ่มคำเหมือน
             </button>
           </div>
 
-          {/* Example */}
           <div className="form-group">
             <label className="form-label">ตัวอย่างประโยค</label>
             <textarea
@@ -141,7 +136,7 @@ export default function AddVocabPage() {
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '.75rem', justifyContent: 'flex-end' }}>
+          <div className="form-actions" style={{ display: 'flex', gap: '.75rem', justifyContent: 'flex-end' }}>
             <Link to="/" className="btn btn-secondary">ยกเลิก</Link>
             <button className="btn btn-primary" type="submit" disabled={loading}>
               {loading ? 'กำลังบันทึก…' : '💾 บันทึก'}
