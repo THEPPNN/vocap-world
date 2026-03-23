@@ -17,7 +17,7 @@ export default function HomePage() {
   }, []);
 
   const handleDelete = async (id) => {
-    if (!window.confirm('ลบคำศัพท์นี้?')) return;
+    if (!window.confirm('Delete this word?')) return;
     try {
       await vocabApi.remove(id);
       setVocabs(v => v.filter(x => x.id !== id));
@@ -38,18 +38,18 @@ export default function HomePage() {
     <div className="page-wrapper">
       <div className="page-header">
         <div>
-          <h1 className="page-title">คลังคำศัพท์</h1>
-          <p className="page-subtitle">{vocabs.length} คำศัพท์ทั้งหมด</p>
+          <h1 className="page-title">My Library</h1>
+          <p className="page-subtitle">{vocabs.length} word{vocabs.length !== 1 ? 's' : ''} total</p>
         </div>
-        <div style={{ display: 'flex', gap: '.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '.75rem', flexWrap: 'wrap', alignItems: 'center', width: '100%' }}>
           <input
             className="search-bar"
             type="text"
-            placeholder="🔍 ค้นหาคำศัพท์…"
+            placeholder="🔍 Search words…"
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
-          <Link to="/add" className="btn btn-primary">+ เพิ่มคำศัพท์</Link>
+          <Link to="/add" className="btn btn-primary">+ Add Word</Link>
         </div>
       </div>
 
@@ -58,8 +58,8 @@ export default function HomePage() {
       {filtered.length === 0 ? (
         <div className="empty-state">
           <div className="empty-state-icon">📭</div>
-          <h3>{search ? 'ไม่พบคำศัพท์ที่ค้นหา' : 'ยังไม่มีคำศัพท์'}</h3>
-          <p>{search ? 'ลองค้นหาด้วยคำอื่น' : 'กด "+ เพิ่มคำศัพท์" เพื่อเริ่มต้น'}</p>
+          <h3>{search ? 'No words found' : 'Your library is empty'}</h3>
+          <p>{search ? 'Try a different search term' : 'Click "+ Add Word" to get started'}</p>
         </div>
       ) : (
         <div className="vocab-grid">
@@ -85,13 +85,13 @@ export default function HomePage() {
                   className="btn btn-secondary btn-sm"
                   onClick={() => navigate(`/edit/${v.id}`)}
                 >
-                  ✏️ แก้ไข
+                  ✏️ Edit
                 </button>
                 <button
                   className="btn btn-danger btn-sm"
                   onClick={() => handleDelete(v.id)}
                 >
-                  🗑️ ลบ
+                  🗑️ Delete
                 </button>
               </div>
             </div>

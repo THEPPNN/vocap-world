@@ -25,7 +25,6 @@ export default function ListPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Filter
   useEffect(() => {
     const q = search.toLowerCase();
     const filtered = vocabs.filter(v =>
@@ -47,13 +46,7 @@ export default function ListPage() {
 
   const hideAll = () => setRevealed({});
 
-  const toggleShuffle = () => {
-    setShuffled(s => !s);
-    setDisplayed(d => shuffled ? [...vocabs].filter(v =>
-      !search || v.word.toLowerCase().includes(search.toLowerCase()) ||
-      v.synonyms.some(s => s.toLowerCase().includes(search.toLowerCase()))
-    ) : shuffle(d));
-  };
+  const toggleShuffle = () => setShuffled(s => !s);
 
   if (loading) return <div className="spinner-wrap"><div className="spinner" /></div>;
 
@@ -62,10 +55,10 @@ export default function ListPage() {
       <div className="page-wrapper">
         <div className="empty-state">
           <div className="empty-state-icon">📋</div>
-          <h3>ยังไม่มีคำศัพท์</h3>
-          <p>เพิ่มคำศัพท์ก่อนเพื่อเริ่มท่อง</p>
+          <h3>No words yet</h3>
+          <p>Add some words to start studying</p>
           <Link to="/add" className="btn btn-primary" style={{ marginTop: '1rem' }}>
-            + เพิ่มคำศัพท์
+            + Add Word
           </Link>
         </div>
       </div>
@@ -76,40 +69,37 @@ export default function ListPage() {
     <div className="page-wrapper">
       <div className="page-header">
         <div>
-          <h1 className="page-title">ท่องคำศัพท์ 📋</h1>
-          <p className="page-subtitle">{displayed.length} คำศัพท์</p>
+          <h1 className="page-title">Study List 📋</h1>
+          <p className="page-subtitle">{displayed.length} word{displayed.length !== 1 ? 's' : ''}</p>
         </div>
-        <div style={{ display: 'flex', gap: '.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
-          <input
-            className="search-bar"
-            type="text"
-            placeholder="🔍 ค้นหา…"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
-        </div>
+        <input
+          className="search-bar"
+          type="text"
+          placeholder="🔍 Search…"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
       </div>
 
-      {/* Toolbar */}
       <div style={{ display: 'flex', gap: '.5rem', marginBottom: '1.25rem', flexWrap: 'wrap' }}>
         <button
           className={`btn btn-sm ${shuffled ? 'btn-primary' : 'btn-secondary'}`}
           onClick={toggleShuffle}
         >
-          🔀 {shuffled ? 'ยกเลิกสุ่ม' : 'สุ่มลำดับ'}
+          🔀 {shuffled ? 'Cancel shuffle' : 'Shuffle'}
         </button>
         <button className="btn btn-success btn-sm" onClick={revealAll}>
-          👁 เปิดทั้งหมด
+          👁 Reveal all
         </button>
         <button className="btn btn-secondary btn-sm" onClick={hideAll}>
-          🙈 ปิดทั้งหมด
+          🙈 Hide all
         </button>
       </div>
 
       {displayed.length === 0 ? (
         <div className="empty-state">
           <div className="empty-state-icon">🔍</div>
-          <h3>ไม่พบคำศัพท์</h3>
+          <h3>No words found</h3>
         </div>
       ) : (
         <div className="study-list">
@@ -136,7 +126,7 @@ export default function ListPage() {
                   className={`reveal-btn ${revealed[v.id] ? 'revealed' : ''}`}
                   onClick={e => { e.stopPropagation(); toggleReveal(v.id); }}
                 >
-                  {revealed[v.id] ? '🙈 ซ่อน' : '👁 ดูคำแปล'}
+                  {revealed[v.id] ? '🙈 Hide' : '👁 Reveal'}
                 </button>
               </div>
 

@@ -7,8 +7,8 @@ export default function LoginPage() {
   const { login } = useAuth();
   const navigate  = useNavigate();
 
-  const [form, setForm]     = useState({ email: '', password: '' });
-  const [error, setError]   = useState('');
+  const [form, setForm]       = useState({ email: '', password: '' });
+  const [error, setError]     = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -35,10 +35,10 @@ export default function LoginPage() {
       <div className="auth-card">
         <div className="auth-logo">
           <h1>📚 VocabVault</h1>
-          <p>คลังคำศัพท์ส่วนตัวของคุณ</p>
+          <p>Your personal vocabulary vault</p>
         </div>
 
-        <h2 className="auth-title">เข้าสู่ระบบ</h2>
+        <h2 className="auth-title">Sign in</h2>
 
         {error && <div className="alert alert-error">{error}</div>}
 
@@ -58,7 +58,7 @@ export default function LoginPage() {
           </div>
 
           <div className="form-group">
-            <label className="form-label">รหัสผ่าน</label>
+            <label className="form-label">Password</label>
             <input
               className="form-input"
               type="password"
@@ -76,13 +76,13 @@ export default function LoginPage() {
             disabled={loading}
             style={{ width: '100%', marginTop: '.5rem' }}
           >
-            {loading ? 'กำลังเข้าสู่ระบบ…' : 'เข้าสู่ระบบ'}
+            {loading ? 'Signing in…' : 'Sign in'}
           </button>
         </form>
 
         <p className="auth-footer">
-          ยังไม่มีบัญชี?{' '}
-          <Link to="/register">สมัครสมาชิกที่นี่</Link>
+          Don't have an account?{' '}
+          <Link to="/register">Sign up here</Link>
         </p>
       </div>
     </div>

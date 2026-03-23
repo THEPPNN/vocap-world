@@ -65,8 +65,8 @@ export default function EditVocabPage() {
   return (
     <div className="page-wrapper">
       <div className="page-header">
-        <h1 className="page-title">แก้ไขคำศัพท์</h1>
-        <Link to="/" className="btn btn-secondary">← กลับ</Link>
+        <h1 className="page-title">Edit Word</h1>
+        <Link to="/" className="btn btn-secondary">← Back</Link>
       </div>
 
       <div className="card" style={{ maxWidth: 640 }}>
@@ -74,7 +74,7 @@ export default function EditVocabPage() {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">คำศัพท์ <span style={{ color: 'red' }}>*</span></label>
+            <label className="form-label">Word <span style={{ color: 'red' }}>*</span></label>
             <input
               className="form-input"
               type="text"
@@ -86,7 +86,7 @@ export default function EditVocabPage() {
           </div>
 
           <div className="form-group">
-            <label className="form-label">คำแปล <span style={{ color: 'red' }}>*</span></label>
+            <label className="form-label">Translation / Meaning <span style={{ color: 'red' }}>*</span></label>
             <input
               className="form-input"
               type="text"
@@ -97,7 +97,7 @@ export default function EditVocabPage() {
           </div>
 
           <div className="form-group">
-            <label className="form-label">คำเหมือน</label>
+            <label className="form-label">Synonyms</label>
             <div className="synonyms-list">
               {form.synonyms.map((syn, i) => (
                 <div key={i} className="synonym-row">
@@ -106,7 +106,7 @@ export default function EditVocabPage() {
                     type="text"
                     value={syn}
                     onChange={e => setSynonym(i, e.target.value)}
-                    placeholder={`คำเหมือนที่ ${i + 1}`}
+                    placeholder={"Synonym " + (i + 1)}
                   />
                   {form.synonyms.length > 1 && (
                     <button
@@ -124,14 +124,13 @@ export default function EditVocabPage() {
               type="button"
               className="add-synonym-btn"
               onClick={addSynonym}
-              style={{ marginTop: '.5rem' }}
             >
-              + เพิ่มคำเหมือน
+              + Add synonym
             </button>
           </div>
 
           <div className="form-group">
-            <label className="form-label">ตัวอย่างประโยค</label>
+            <label className="form-label">Example sentence</label>
             <textarea
               className="form-textarea"
               value={form.example_sentence}
@@ -140,10 +139,10 @@ export default function EditVocabPage() {
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '.75rem', justifyContent: 'flex-end' }}>
-            <Link to="/" className="btn btn-secondary">ยกเลิก</Link>
+          <div className="form-actions" style={{ display: 'flex', gap: '.75rem', justifyContent: 'flex-end' }}>
+            <Link to="/" className="btn btn-secondary">Cancel</Link>
             <button className="btn btn-primary" type="submit" disabled={saving}>
-              {saving ? 'กำลังบันทึก…' : '💾 บันทึก'}
+              {saving ? 'Saving…' : '💾 Save'}
             </button>
           </div>
         </form>

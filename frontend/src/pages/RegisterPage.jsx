@@ -19,7 +19,7 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (form.password.length < 6) {
-      return setError('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');
+      return setError('Password must be at least 6 characters');
     }
     setLoading(true);
     try {
@@ -38,16 +38,16 @@ export default function RegisterPage() {
       <div className="auth-card">
         <div className="auth-logo">
           <h1>📚 VocabVault</h1>
-          <p>คลังคำศัพท์ส่วนตัวของคุณ</p>
+          <p>Your personal vocabulary vault</p>
         </div>
 
-        <h2 className="auth-title">สมัครสมาชิก</h2>
+        <h2 className="auth-title">Create account</h2>
 
         {error && <div className="alert alert-error">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">ชื่อผู้ใช้</label>
+            <label className="form-label">Username</label>
             <input
               className="form-input"
               type="text"
@@ -74,14 +74,14 @@ export default function RegisterPage() {
           </div>
 
           <div className="form-group">
-            <label className="form-label">รหัสผ่าน</label>
+            <label className="form-label">Password</label>
             <input
               className="form-input"
               type="password"
               name="password"
               value={form.password}
               onChange={handleChange}
-              placeholder="อย่างน้อย 6 ตัวอักษร"
+              placeholder="At least 6 characters"
               required
             />
           </div>
@@ -92,13 +92,13 @@ export default function RegisterPage() {
             disabled={loading}
             style={{ width: '100%', marginTop: '.5rem' }}
           >
-            {loading ? 'กำลังสมัคร…' : 'สมัครสมาชิก'}
+            {loading ? 'Creating account…' : 'Sign up'}
           </button>
         </form>
 
         <p className="auth-footer">
-          มีบัญชีอยู่แล้ว?{' '}
-          <Link to="/login">เข้าสู่ระบบ</Link>
+          Already have an account?{' '}
+          <Link to="/login">Sign in</Link>
         </p>
       </div>
     </div>

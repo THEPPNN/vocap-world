@@ -22,10 +22,7 @@ export default function FlashcardPage() {
 
   useEffect(() => {
     vocabApi.getAll()
-      .then(data => {
-        setVocabs(data);
-        setDeck(shuffle(data));
-      })
+      .then(data => { setVocabs(data); setDeck(shuffle(data)); })
       .finally(() => setLoading(false));
   }, []);
 
@@ -54,10 +51,10 @@ export default function FlashcardPage() {
       <div className="page-wrapper flashcard-page">
         <div className="empty-state">
           <div className="empty-state-icon">🃏</div>
-          <h3>ยังไม่มีคำศัพท์</h3>
-          <p>เพิ่มคำศัพท์ก่อนเพื่อเริ่มฝึก Flashcard</p>
+          <h3>No words yet</h3>
+          <p>Add some words to start practicing flashcards</p>
           <Link to="/add" className="btn btn-primary" style={{ marginTop: '1rem' }}>
-            + เพิ่มคำศัพท์
+            + Add Word
           </Link>
         </div>
       </div>
@@ -68,18 +65,18 @@ export default function FlashcardPage() {
     const pct = Math.round((known / deck.length) * 100);
     return (
       <div className="page-wrapper flashcard-page">
-        <h1 className="page-title" style={{ marginBottom: '2rem' }}>ผลการฝึก 🎉</h1>
+        <h1 className="page-title" style={{ marginBottom: '2rem' }}>Session Complete 🎉</h1>
         <div className="card fc-result-card">
           <div className="fc-result-score">{pct}%</div>
           <div className="fc-result-label">
-            จำได้ {known} จาก {deck.length} คำ
+            Remembered {known} of {deck.length} words
           </div>
           <div style={{ display: 'flex', gap: '.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <button className="btn btn-primary btn-lg" onClick={restart}>
-              🔄 เล่นอีกครั้ง
+              🔄 Play again
             </button>
             <Link to="/" className="btn btn-secondary btn-lg">
-              กลับหน้าหลัก
+              Back to library
             </Link>
           </div>
         </div>
@@ -87,8 +84,8 @@ export default function FlashcardPage() {
     );
   }
 
-  const card = deck[index];
-  const progress = ((index) / deck.length) * 100;
+  const card     = deck[index];
+  const progress = (index / deck.length) * 100;
 
   return (
     <div className="page-wrapper flashcard-page">
@@ -96,7 +93,6 @@ export default function FlashcardPage() {
         <h1 className="page-title">Flashcard 🃏</h1>
       </div>
 
-      {/* Progress */}
       <div className="flashcard-progress">
         {index + 1} / {deck.length}
         <div className="progress-bar-track">
@@ -104,10 +100,8 @@ export default function FlashcardPage() {
         </div>
       </div>
 
-      {/* Card */}
       <div className="flashcard-scene" onClick={() => setFlipped(f => !f)}>
         <div className={`flashcard-inner ${flipped ? 'flipped' : ''}`}>
-          {/* Front */}
           <div className="flashcard-face flashcard-front">
             <div className="fc-word">{card.word}</div>
             {card.synonyms.length > 0 && (
@@ -117,41 +111,33 @@ export default function FlashcardPage() {
                 ))}
               </div>
             )}
-            <div className="fc-hint">คลิกเพื่อดูคำแปล 👆</div>
+            <div className="fc-hint">Tap to reveal meaning 👆</div>
           </div>
 
-          {/* Back */}
           <div className="flashcard-face flashcard-back">
             <div className="fc-translation">{card.translation}</div>
             {card.example_sentence && (
               <div className="fc-example">"{card.example_sentence}"</div>
             )}
             <div className="fc-hint" style={{ color: 'var(--text-3)', marginTop: '1rem' }}>
-              คลิกกลับไปดูคำศัพท์
+              Tap to flip back
             </div>
           </div>
         </div>
       </div>
 
-      {/* Controls */}
       <div className="flashcard-controls">
-        <button
-          className="btn fc-unknown-btn btn-lg"
-          onClick={() => next(false)}
-        >
-          ❌ ยังจำไม่ได้
+        <button className="btn fc-unknown-btn btn-lg" onClick={() => next(false)}>
+          ❌ Still learning
         </button>
-        <span className="fc-counter">จำได้ {known} คำ</span>
-        <button
-          className="btn fc-known-btn btn-lg"
-          onClick={() => next(true)}
-        >
-          ✅ จำได้แล้ว
+        <span className="fc-counter">{known} known</span>
+        <button className="btn fc-known-btn btn-lg" onClick={() => next(true)}>
+          ✅ Got it!
         </button>
       </div>
 
       <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-        <Link to="/" className="btn btn-secondary btn-sm">← กลับหน้าหลัก</Link>
+        <Link to="/" className="btn btn-secondary btn-sm">← Back to library</Link>
       </div>
     </div>
   );

@@ -43,7 +43,7 @@ export default function AddVocabPage() {
         ...form,
         synonyms: form.synonyms.filter(s => s.trim()),
       });
-      setSuccess('✅ เพิ่มคำศัพท์เรียบร้อยแล้ว!');
+      setSuccess('✅ Word added successfully!');
       setForm(emptyForm);
       window.scrollTo(0, 0);
     } catch (err) {
@@ -56,10 +56,8 @@ export default function AddVocabPage() {
   return (
     <div className="page-wrapper">
       <div className="page-header">
-        <div>
-          <h1 className="page-title">เพิ่มคำศัพท์ใหม่</h1>
-        </div>
-        <Link to="/" className="btn btn-secondary">← กลับ</Link>
+        <h1 className="page-title">Add New Word</h1>
+        <Link to="/" className="btn btn-secondary">← Back</Link>
       </div>
 
       <div className="card" style={{ maxWidth: 640 }}>
@@ -68,32 +66,32 @@ export default function AddVocabPage() {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">คำศัพท์ <span style={{ color: 'red' }}>*</span></label>
+            <label className="form-label">Word <span style={{ color: 'red' }}>*</span></label>
             <input
               className="form-input"
               type="text"
               value={form.word}
               onChange={e => setField('word', e.target.value)}
-              placeholder="เช่น serendipity"
+              placeholder="e.g. serendipity"
               required
               autoFocus
             />
           </div>
 
           <div className="form-group">
-            <label className="form-label">คำแปล <span style={{ color: 'red' }}>*</span></label>
+            <label className="form-label">Translation / Meaning <span style={{ color: 'red' }}>*</span></label>
             <input
               className="form-input"
               type="text"
               value={form.translation}
               onChange={e => setField('translation', e.target.value)}
-              placeholder="เช่น การค้นพบสิ่งดีโดยบังเอิญ"
+              placeholder="e.g. the occurrence of fortunate events by chance"
               required
             />
           </div>
 
           <div className="form-group">
-            <label className="form-label">คำเหมือน (Synonyms)</label>
+            <label className="form-label">Synonyms</label>
             <div className="synonyms-list">
               {form.synonyms.map((syn, i) => (
                 <div key={i} className="synonym-row">
@@ -102,7 +100,7 @@ export default function AddVocabPage() {
                     type="text"
                     value={syn}
                     onChange={e => setSynonym(i, e.target.value)}
-                    placeholder={`คำเหมือนที่ ${i + 1}`}
+                    placeholder={"Synonym " + (i + 1)}
                   />
                   {form.synonyms.length > 1 && (
                     <button
@@ -121,25 +119,25 @@ export default function AddVocabPage() {
               className="add-synonym-btn"
               onClick={addSynonym}
             >
-              + เพิ่มคำเหมือน
+              + Add synonym
             </button>
           </div>
 
           <div className="form-group">
-            <label className="form-label">ตัวอย่างประโยค</label>
+            <label className="form-label">Example sentence</label>
             <textarea
               className="form-textarea"
               value={form.example_sentence}
               onChange={e => setField('example_sentence', e.target.value)}
-              placeholder="เช่น It was pure serendipity that we met that day."
+              placeholder="e.g. It was pure serendipity that we met that day."
               rows={3}
             />
           </div>
 
           <div className="form-actions" style={{ display: 'flex', gap: '.75rem', justifyContent: 'flex-end' }}>
-            <Link to="/" className="btn btn-secondary">ยกเลิก</Link>
+            <Link to="/" className="btn btn-secondary">Cancel</Link>
             <button className="btn btn-primary" type="submit" disabled={loading}>
-              {loading ? 'กำลังบันทึก…' : '💾 บันทึก'}
+              {loading ? 'Saving…' : '💾 Save'}
             </button>
           </div>
         </form>
