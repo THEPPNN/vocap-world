@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { vocab as vocabApi } from '../api';
 
-export default function MasteredPage() {
+export default function Masteredpage() {
   const [vocabs,    setVocabs]    = useState([]);
   const [loading,   setLoading]   = useState(true);
   const [search,    setSearch]    = useState('');

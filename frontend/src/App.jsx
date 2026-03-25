@@ -8,7 +8,7 @@ import AddVocabPage  from './pages/AddVocabPage';
 import EditVocabPage from './pages/EditVocabPage';
 import FlashcardPage from './pages/FlashcardPage';
 import ListPage      from './pages/ListPage';
-import MasteredPage  from './pages/MasteredPage';
+import MasteredPage  from './pages/Masteredpage';
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
