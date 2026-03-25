@@ -24,8 +24,9 @@ export const auth = {
 };
 
 export const vocab = {
-  getAll: ()         => request('/vocab'),
-  add:    (body)     => request('/vocab',       { method: 'POST',   body: JSON.stringify(body) }),
-  update: (id, body) => request(`/vocab/${id}`, { method: 'PUT',    body: JSON.stringify(body) }),
-  remove: (id)       => request(`/vocab/${id}`, { method: 'DELETE' }),
+  getAll:        ()              => request('/vocab'),
+  add:           (body)          => request('/vocab',                { method: 'POST',  body: JSON.stringify(body) }),
+  update:        (id, body)      => request(`/vocab/${id}`,          { method: 'PUT',   body: JSON.stringify(body) }),
+  remove:        (id)            => request(`/vocab/${id}`,          { method: 'DELETE' }),
+  setMastered:   (id, mastered)  => request(`/vocab/${id}/mastered`, { method: 'PATCH', body: JSON.stringify({ is_mastered: mastered }) }),
 };

@@ -1,13 +1,14 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
-import Navbar       from './components/Navbar';
-import LoginPage    from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import HomePage     from './pages/HomePage';
-import AddVocabPage from './pages/AddVocabPage';
+import Navbar        from './components/Navbar';
+import LoginPage     from './pages/LoginPage';
+import RegisterPage  from './pages/RegisterPage';
+import HomePage      from './pages/HomePage';
+import AddVocabPage  from './pages/AddVocabPage';
 import EditVocabPage from './pages/EditVocabPage';
 import FlashcardPage from './pages/FlashcardPage';
 import ListPage      from './pages/ListPage';
+import MasteredPage  from './pages/MasteredPage';
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
@@ -23,23 +24,20 @@ function PublicRoute({ children }) {
 
 export default function App() {
   const { user } = useAuth();
-
   return (
     <>
       {user && <Navbar />}
       <Routes>
-        {/* Public */}
         <Route path="/login"    element={<PublicRoute><LoginPage /></PublicRoute>} />
         <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
 
-        {/* Private */}
-        <Route path="/"           element={<PrivateRoute><HomePage /></PrivateRoute>} />
-        <Route path="/add"        element={<PrivateRoute><AddVocabPage /></PrivateRoute>} />
-        <Route path="/edit/:id"   element={<PrivateRoute><EditVocabPage /></PrivateRoute>} />
-        <Route path="/flashcard"  element={<PrivateRoute><FlashcardPage /></PrivateRoute>} />
-        <Route path="/list"       element={<PrivateRoute><ListPage /></PrivateRoute>} />
+        <Route path="/"          element={<PrivateRoute><HomePage /></PrivateRoute>} />
+        <Route path="/add"       element={<PrivateRoute><AddVocabPage /></PrivateRoute>} />
+        <Route path="/edit/:id"  element={<PrivateRoute><EditVocabPage /></PrivateRoute>} />
+        <Route path="/flashcard" element={<PrivateRoute><FlashcardPage /></PrivateRoute>} />
+        <Route path="/list"      element={<PrivateRoute><ListPage /></PrivateRoute>} />
+        <Route path="/mastered"  element={<PrivateRoute><MasteredPage /></PrivateRoute>} />
 
-        {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

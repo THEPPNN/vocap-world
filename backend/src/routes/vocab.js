@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'เกิดข้อผิดพลาด' });
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
   const { word, translation, example_sentence, synonyms = [] } = req.body;
 
   if (!word?.trim() || !translation?.trim()) {
-    return res.status(400).json({ error: 'คำศัพท์และคำแปลจำเป็นต้องกรอก' });
+    return res.status(400).json({ error: 'Word and translation are required' });
   }
 
   const client = await pool.connect();
@@ -61,7 +61,7 @@ router.post('/', async (req, res) => {
   } catch (err) {
     await client.query('ROLLBACK');
     console.error(err);
-    res.status(500).json({ error: 'เกิดข้อผิดพลาด' });
+    res.status(500).json({ error: 'Server error' });
   } finally {
     client.release();
   }
@@ -73,21 +73,20 @@ router.put('/:id', async (req, res) => {
   const { word, translation, example_sentence, synonyms = [] } = req.body;
 
   if (!word?.trim() || !translation?.trim()) {
-    return res.status(400).json({ error: 'คำศัพท์และคำแปลจำเป็นต้องกรอก' });
+    return res.status(400).json({ error: 'Word and translation are required' });
   }
 
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
 
-    // Verify ownership
     const { rows: own } = await client.query(
       'SELECT id FROM vocabulary WHERE id = $1 AND user_id = $2',
       [vocabId, req.user.id]
     );
     if (!own.length) {
       await client.query('ROLLBACK');
-      return res.status(404).json({ error: 'ไม่พบคำศัพท์' });
+      return res.status(404).json({ error: 'Not found' });
     }
 
     const { rows } = await client.query(
@@ -97,7 +96,6 @@ router.put('/:id', async (req, res) => {
       [word.trim(), translation.trim(), example_sentence?.trim() || null, vocabId]
     );
 
-    // Replace synonyms
     await client.query('DELETE FROM synonyms WHERE vocab_id = $1', [vocabId]);
     const cleanSyns = synonyms.map(s => s.trim()).filter(Boolean);
     for (const syn of cleanSyns) {
@@ -112,9 +110,34 @@ router.put('/:id', async (req, res) => {
   } catch (err) {
     await client.query('ROLLBACK');
     console.error(err);
-    res.status(500).json({ error: 'เกิดข้อผิดพลาด' });
+    res.status(500).json({ error: 'Server error' });
   } finally {
     client.release();
+  }
+});
+
+// ─── PATCH toggle mastered ────────────────────────────────────────────────────
+router.patch('/:id/mastered', async (req, res) => {
+  const vocabId    = parseInt(req.params.id, 10);
+  const { is_mastered } = req.body;
+
+  if (typeof is_mastered !== 'boolean') {
+    return res.status(400).json({ error: 'is_mastered must be boolean' });
+  }
+
+  try {
+    const { rows } = await pool.query(
+      `UPDATE vocabulary
+       SET is_mastered = $1, updated_at = NOW()
+       WHERE id = $2 AND user_id = $3
+       RETURNING id, is_mastered`,
+      [is_mastered, vocabId, req.user.id]
+    );
+    if (!rows.length) return res.status(404).json({ error: 'Not found' });
+    res.json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
@@ -125,11 +148,11 @@ router.delete('/:id', async (req, res) => {
       'DELETE FROM vocabulary WHERE id = $1 AND user_id = $2 RETURNING id',
       [req.params.id, req.user.id]
     );
-    if (!rows.length) return res.status(404).json({ error: 'ไม่พบคำศัพท์' });
-    res.json({ message: 'ลบคำศัพท์แล้ว' });
+    if (!rows.length) return res.status(404).json({ error: 'Not found' });
+    res.json({ message: 'Deleted' });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'เกิดข้อผิดพลาด' });
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
