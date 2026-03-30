@@ -12,13 +12,13 @@ function shuffle(arr) {
 }
 
 function buildText(vocabs) {
-  // Shuffle words and join with spaces — aim for ~80 words
+  // Shuffle words and join with spaces — aim for ~40 words
   const words = shuffle(vocabs.map(v => v.word));
   const repeated = [];
-  while (repeated.length < Math.min(80, words.length * 3)) {
+  while (repeated.length < Math.min(40, words.length * 3)) {
     repeated.push(...shuffle(words));
   }
-  return repeated.slice(0, Math.min(80, repeated.length)).join(' ');
+  return repeated.slice(0, Math.min(40, repeated.length)).join(' ');
 }
 
 function formatTime(seconds) {
