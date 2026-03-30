@@ -9,6 +9,7 @@ import EditVocabPage from './pages/EditVocabPage';
 import FlashcardPage from './pages/FlashcardPage';
 import ListPage      from './pages/ListPage';
 import MasteredPage  from './pages/Masteredpage';
+import TypingPage    from './pages/Typingpage';
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
@@ -37,7 +38,7 @@ export default function App() {
         <Route path="/flashcard" element={<PrivateRoute><FlashcardPage /></PrivateRoute>} />
         <Route path="/list"      element={<PrivateRoute><ListPage /></PrivateRoute>} />
         <Route path="/mastered"  element={<PrivateRoute><MasteredPage /></PrivateRoute>} />
-
+        <Route path="/typing"    element={<PrivateRoute><TypingPage /></PrivateRoute>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
