@@ -690,3 +690,33 @@ input, textarea, select { font-family: inherit; font-size: 1rem; }
   .mastered-item { flex-direction: column; }
   .unmaster-btn { align-self: stretch; text-align: center; }
 }
+
+/* ── Speak Button ────────────────────────────────────────────────────────────── */
+.fc-word-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+}
+
+.speak-btn {
+  background: rgba(255,255,255,.2);
+  border: 1.5px solid rgba(255,255,255,.4);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.speak-btn:hover  { background: rgba(255,255,255,.35); transform: scale(1.1); }
+.speak-btn.speaking { background: rgba(255,255,255,.45); animation: pulse-speak .6s ease infinite alternate; }
+
+@keyframes pulse-speak {
+  from { transform: scale(1); }
+  to   { transform: scale(1.15); }
+}

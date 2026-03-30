@@ -1,6 +1,44 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { vocab as vocabApi } from '../api';
+
+// ── Text-to-Speech ────────────────────────────────────────────────────────────
+function speak(text, lang = 'en-US') {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang  = lang;
+  utter.rate  = 0.9;
+  window.speechSynthesis.speak(utter);
+}
+
+function SpeakButton({ text, lang }) {
+  const [speaking, setSpeaking] = useState(false);
+
+  const handleSpeak = (e) => {
+    e.stopPropagation(); // don't flip the card
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang  = lang || 'en-US';
+    utter.rate  = 0.9;
+    utter.onstart = () => setSpeaking(true);
+    utter.onend   = () => setSpeaking(false);
+    utter.onerror = () => setSpeaking(false);
+    window.speechSynthesis.speak(utter);
+  };
+
+  return (
+    <button
+      className={`speak-btn ${speaking ? 'speaking' : ''}`}
+      onClick={handleSpeak}
+      title="Listen to pronunciation"
+      aria-label="Speak"
+    >
+      {speaking ? '🔊' : '🔈'}
+    </button>
+  );
+}
 
 function shuffle(arr) {
   const a = [...arr];
@@ -164,7 +202,10 @@ export default function FlashcardPage() {
       <div className="flashcard-scene" onClick={() => setFlipped(f => !f)}>
         <div className={`flashcard-inner ${flipped ? 'flipped' : ''}`}>
           <div className="flashcard-face flashcard-front">
-            <div className="fc-word">{card.word}</div>
+            <div className="fc-word-row">
+              <div className="fc-word">{card.word}</div>
+              <SpeakButton text={card.word} lang="en-US" />
+            </div>
             {card.synonyms?.length > 0 && (
               <div className="fc-synonyms">
                 {card.synonyms.map((s, i) => (
